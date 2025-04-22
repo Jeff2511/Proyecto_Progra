@@ -171,7 +171,7 @@ public class Sistema {
 
     /**
      * Genera un reporte textual de todos los eventos existentes
-     * usando solo concatenación de String.
+     * usando solo concatenación de String..
      */
     public String generarReporteEventos() {
         if (contadorEventos == 0) {
