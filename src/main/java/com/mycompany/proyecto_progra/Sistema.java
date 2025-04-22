@@ -195,5 +195,30 @@ public class Sistema {
         return reporte;
     }
 
+    /**
+    * Elimina un evento dado su ID.
+    * idEvento el identificador del evento a eliminar
+    * return mensaje indicando éxito o que no se encontró el evento
+    */
+    public String eliminarEvento(String idEvento) {
+        // Buscar posición del evento
+        for (int i = 0; i < contadorEventos; i++) {
+            Evento ev = listaEventos[i];
+            if (ev != null && ev.getIdEvento().equals(idEvento)) {
+                // Desplazar todo lo que viene después una posición hacia atrás
+                for (int j = i; j < contadorEventos - 1; j++) {
+                    listaEventos[j] = listaEventos[j + 1];
+                }
+                // Limpiar el último hueco
+                listaEventos[contadorEventos - 1] = null;
+                // Ajustar contador
+                contadorEventos--;
+                return "Evento con ID " + idEvento + " eliminado correctamente.";
+            }
+        }
+        return "No se encontró ningún evento con ID: " + idEvento;
+    }
+
+
 }
 
