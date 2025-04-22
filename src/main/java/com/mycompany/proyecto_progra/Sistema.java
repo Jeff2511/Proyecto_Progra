@@ -169,31 +169,7 @@ public class Sistema {
         return entradasEncontradas;
     }
 
-    /**
-     * Genera un reporte textual de todos los eventos existentes
-     * usando solo concatenación de String..
-     */
-    public String generarReporteEventos() {
-        if (contadorEventos == 0) {
-            return "No hay eventos registrados.";
-        }
-
-        String reporte = "=== Reporte de Eventos Registrados ===\n";
-        for (int i = 0; i < contadorEventos; i++) {
-            Evento ev = listaEventos[i];
-            // Validamos que no sea nulo y que tenga un ID válido
-            if (ev != null && ev.getIdEvento() != null && !ev.getIdEvento().isEmpty()) {
-                reporte = reporte
-                    + "- " + ev.getIdEvento() + ": " + ev.getNombre() + "\n"
-                    + "  Ubicación: " + ev.getUbicacion() + "\n"
-                    + "  Fecha: " + ev.getFecha() + "\n"
-                    + "  Tipo: " + ev.getTipoEvento() + "\n"
-                    + "  Capacidad: " + ev.getCapacidadMaxima()
-                    + " (Vendidas: " + ev.getEntradasVendidas() + ")\n";
-            }
-        }
-        return reporte;
-    }
+    
 
 }
 
