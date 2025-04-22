@@ -219,6 +219,45 @@ public class Sistema {
         return "No se encontró ningún evento con ID: " + idEvento;
     }
 
+     /**
+     * Valida que la entrada existe, pertenece al evento indicado y no ha sido usada.
+     * Luego la invalida para que no pueda volver a usarse.
+     *
+     * codigoEntrada el código TKT-####
+     * idEvento      el ID del evento al que se quiere ingresar
+     * return mensaje indicando si se permitió o denegó el acceso
+     */
+    public String controlarAcceso(String codigoEntrada, String idEvento) {
+        // Recorremos solo hasta contadorEntradas
+        for (int i = 0; i < contadorEntradas; i++) {
+            Entrada ent = listaEntradas[i];
+            if (ent != null && ent.getCodigoEntrada().equals(codigoEntrada)) {
+                // 1) Verificamos que la entrada sea para el evento correcto
+                if (!ent.getIdEvento().equals(idEvento)) {
+                    return "Acceso denegado. La entrada " 
+                        + codigoEntrada 
+                        + " no corresponde al evento " 
+                        + idEvento + ".";
+                }
+                // 2) Verificamos si ya fue usada
+                if (!ent.getValidez()) {
+                    return "Acceso denegado. La entrada " 
+                        + codigoEntrada 
+                        + " ya fue utilizada.";
+                }
+                // 3) Invalida y permite el acceso
+                ent.invalidar();
+                return "Acceso permitido. Entrada " 
+                    + codigoEntrada 
+                    + " marcada como usada.";
+            }
+        }
+        // No existe ninguna entrada con ese código
+        return "Acceso denegado. No se encontró la entrada " 
+            + codigoEntrada + ".";
+    }
+
+
 
 }
 

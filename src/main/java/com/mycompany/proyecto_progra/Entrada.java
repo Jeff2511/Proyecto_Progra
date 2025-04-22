@@ -12,11 +12,13 @@ public class Entrada {
     private String codigoEntrada;  // Formato: TKT-####
     private String nombreUsuario;  // Nombre del usuario que compró
     private String idEvento;       // ID del evento
+    private boolean esValida;
 
     public Entrada(String codigoEntrada, String nombreUsuario, String idEvento) {
         this.codigoEntrada = codigoEntrada;
         this.nombreUsuario = nombreUsuario;
         this.idEvento = idEvento;
+        this.esValida = true;
     }
 
     public String getCodigoEntrada() {
@@ -29,6 +31,15 @@ public class Entrada {
 
     public String getIdEvento() {
         return idEvento;
+    }
+
+    public boolean getValidez(){
+        return esValida;
+    }
+
+    /** Marca la entrada como usada (no válida). */
+    public void invalidar() {
+        this.esValida = false;
     }
 }
 
