@@ -13,39 +13,46 @@ import javax.swing.JOptionPane;
 public class Proyecto_Progra {
     public static void main(String[] args) {
         Sistema sistema = new Sistema();
-        boolean salir = false;
+        int seleccion;
+        String[] opciones = {
+            "Iniciar sesion",
+            "Registrar usuario",
+            "Salir"
+        };
 
-        while (!salir) {
-            String opcion = JOptionPane.showInputDialog(
-                "Menú Principal\n"
-              + "1. Iniciar session\n"
-              + "2. Registrar usuario\n"
-              + "3. Salir\n"
-              + "Seleccione una opción:"
+        do {
+            seleccion = JOptionPane.showOptionDialog(
+                null,
+                "Menú Principal",
+                "Seleccione una opción",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                new Object()  // Sin botón por defecto
             );
 
-            if (opcion == null) {
-                // El usuario cerró el cuadro
-                break;
-            }
-
-            switch (opcion) {
-                case "1":
+            switch (seleccion) {
+                case 0:
                     login(sistema);
                     break;
-                case "2":
+                case 1:
                     registrarUsuario(sistema);
                     break;
-                case "3":
-                    salir = true;
+                case 2:
                     JOptionPane.showMessageDialog(null, "Saliendo del sistema...");
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Opción inválida. Intente de nuevo.");
+                    // Si cierra el diálogo, tratamos como salir
+                    seleccion = 2;
                     break;
             }
-        }
+        } while (seleccion != 2);
+
+        System.exit(0);
     }
+
+
 
     // ----------------------------------------------
     // Menú para el Admin
@@ -53,54 +60,58 @@ public class Proyecto_Progra {
     private static void menuAdmin(Sistema sistema, String idUsuario) {
         boolean continuar = true;
         while (continuar) {
-            String opcion = JOptionPane.showInputDialog(
-                "Menú de Administrador\n"
-              + "1. Registrar Evento\n"
-              + "2. Volver al Menú Principal\n"
-              + "Seleccione una opción:"
-            );
+            Object[] opciones = {"Registrar Evento", "Volver al Menú Principal"};
+int opcion = JOptionPane.showOptionDialog(
+    null,
+    "Menú de Administrador",
+    "Input",
+    JOptionPane.DEFAULT_OPTION,
+    JOptionPane.INFORMATION_MESSAGE,
+    null,
+    opciones,
+    opciones[0]
+);
+
+// El resultado estará en la variable 'opcion'
+// 0 = Registrar Evento, 1 = Volver al Menú Principal, -1 = Cancelar o cerrar
+    switch (opcion) {
+        case 0: {
+            String nombre = JOptionPane.showInputDialog("Nombre del evento:");
+            String ubicacion = JOptionPane.showInputDialog("Ubicación:");
+            String fecha = JOptionPane.showInputDialog("Fecha y hora (ej: 10/06/2025 20:00):");
+
+            String capStr = JOptionPane.showInputDialog("Capacidad máxima:");
+            int capacidadMaxima = Integer.parseInt(capStr);
             
-            if (opcion == null) {
-                // Cerrar diálogo
-                return;
-            }
+            String[] opcionesTipoEvento = {"Concierto", "Fiesta", "Partido", "Conferencia"};
 
-            switch (opcion) {
-                case "1": {
-                    String nombre = JOptionPane.showInputDialog("Nombre del evento:");
-                    String ubicacion = JOptionPane.showInputDialog("Ubicación:");
-                    String fecha = JOptionPane.showInputDialog("Fecha y hora (ej: 10/06/2025 20:00):");
+            // Mostrar el diálogo de entrada con el menú desplegable
+            String tipoEvento = (String) JOptionPane.showInputDialog(
+                null,                             // Componente padre (null significa sin padre)
+                "Seleccione una opción:",         // Mensaje
+                "Menú Desplegable",               // Título del diálogo
+                JOptionPane.PLAIN_MESSAGE,        // Tipo de mensaje
+                null,                             // Icono personalizado (null usa el predeterminado)
+                opcionesTipoEvento,                         // Array de objetos para el menú desplegable
+                opcionesTipoEvento[0]                       // Valor seleccionado por defecto
+            );
 
-                    String capStr = JOptionPane.showInputDialog("Capacidad máxima:");
-                    int capacidadMaxima = Integer.parseInt(capStr);
-                    
-                    String[] opcionesTipoEvento = {"Concierto", "Fiesta", "Partido", "Conferencia"};
-
-                    // Mostrar el diálogo de entrada con el menú desplegable
-                    String tipoEvento = (String) JOptionPane.showInputDialog(
-                        null,                             // Componente padre (null significa sin padre)
-                        "Seleccione una opción:",         // Mensaje
-                        "Menú Desplegable",               // Título del diálogo
-                        JOptionPane.PLAIN_MESSAGE,        // Tipo de mensaje
-                        null,                             // Icono personalizado (null usa el predeterminado)
-                        opcionesTipoEvento,                         // Array de objetos para el menú desplegable
-                        opcionesTipoEvento[0]                       // Valor seleccionado por defecto
-                    );
-
-                    String resultado = sistema.registrarEvento(nombre, ubicacion, fecha, capacidadMaxima, tipoEvento);
-                    JOptionPane.showMessageDialog(null, resultado);
-                    break;
-                }
-                case "2":
-                    continuar = false;
-                    break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Opción inválida.");
-                    break;
-            }
+            String resultado = sistema.registrarEvento(nombre, ubicacion, fecha, capacidadMaxima, tipoEvento);
+            JOptionPane.showMessageDialog(null, resultado);
+            break;
         }
-    }
-
+       
+    case 1:
+    continuar = false;
+    break;
+default:
+    JOptionPane.showMessageDialog(null, "Opción inválida.");
+    break;
+    case JOptionPane.CLOSED_OPTION:
+        // El usuario cerró la ventana
+        break;
+}}}            
+            
     private static void login(Sistema sistema){
         // Extraer el ID del usuario (opcionalmente, el usuario podría ya leerlo del mensaje).
         String idUsuario = JOptionPane.showInputDialog("Ingrese su ID de usuario (USR-####) para continuar:");
